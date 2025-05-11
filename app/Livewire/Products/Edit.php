@@ -16,7 +16,7 @@ class Edit extends Component
     use WithFileUploads;
     #[Validate('required')]
     public $image;
-    #[Validate('required|min:5')]
+    #[Validate('required|min:5|unique:products,name')]
     public $name;
     #[Validate('required|min:5')]
     public $description;
