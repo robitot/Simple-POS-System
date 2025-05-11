@@ -18,11 +18,22 @@
     </div>
 
     <div class="d-flex flex-column gap-2  ">
-        <button wire:loading.attr='disabled' wire:loading.class='opacity-50' wire:click.prevent='authenticate' class="btn btn-primary w-100 fw-bold">
-            <span wire:loading.remove>Log in</span>
-            <div wire:loading class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
+        <button type="submit" class="btn btn-primary w-100" wire:loading.attr="disabled"
+            wire:click.prevent="authenticate" @if ($cooldownUntil) disabled @endif>
+
+            <span wire:loading.remove>
+                @if ($cooldownUntil)
+                    Try again in <span id="cooldown-timer">{{ $remainingSeconds }}</span>s
+                @else
+                    Login
+                @endif
+            </span>
+
+            <span wire:loading>
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </span>
         </button>
         @if (session('success'))
             <span class="text-success text-center w-100">{{ session('success') }}</span>
@@ -32,5 +43,19 @@
         {{-- <span>Don't have an account? <a href="{{ route('register') }}" wire:navigate>Create here</a></span>
         <span>Forgot password? <a href="#">Click here</a></span> --}}
     </div>
-
+    <script>
+        document.addEventListener('livewire:init', () => {
+            setInterval(() => {
+                const timerEl = document.getElementById('cooldown-timer');
+                if (timerEl) {
+                    const current = parseInt(timerEl.textContent);
+                    if (current > 0) {
+                        timerEl.textContent = current - 1;
+                    } else if (@this.cooldownUntil) {
+                        @this.checkCooldown();
+                    }
+                }
+            }, 1000);
+        });
+    </script>
 </div>

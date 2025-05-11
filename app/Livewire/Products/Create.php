@@ -14,7 +14,7 @@ class Create extends Component
     use WithFileUploads;
     #[Validate('required|image|mimes:jpeg,png,jpg,gif,svg|max:2048')]
     public $image;
-    #[Validate('required|min:5')]
+    #[Validate('required|min:5|unique:products,name')]
     public $name;
     #[Validate('required|min:5')]
     public $description;

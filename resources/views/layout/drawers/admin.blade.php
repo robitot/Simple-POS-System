@@ -32,12 +32,12 @@
      <p class="text-hover {{ Route::is('category') ? 'text-white' : '' }}">Categories</p>
  </a>
 
- <a href="{{ route('inventory') }}"
+ {{-- <a href="{{ route('inventory') }}"
      class="active-hover d-flex justify-content-start gap-3 align-items-center cursor-pointer text-decoration-none text-black py-2
 {{ Route::is('inventory') ? 'active-nav' : '' }}">
      <i class="fa-solid fa-box text-hover icon-size {{ Route::is('inventory') ? 'text-white' : '' }}"></i>
      <p class="text-hover {{ Route::is('inventory') ? 'text-white' : '' }}">Inventory</p>
- </a>
+ </a> --}}
 
  <a href="{{ route('POS') }}"
      class="active-hover d-flex justify-content-start gap-3 align-items-center cursor-pointer text-decoration-none text-black py-2

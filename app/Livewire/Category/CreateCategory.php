@@ -3,11 +3,13 @@
 namespace App\Livewire\Category;
 
 use App\Models\Category;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class CreateCategory extends Component
 {
 
+    #[Validate('required|min:5|unique:categories,name')]
     public $name;
 
     public function render()
@@ -17,6 +19,7 @@ class CreateCategory extends Component
 
     public function create()
     {
+        $this->validate();
         try {
             Category::create([
                 'name' => $this->name,

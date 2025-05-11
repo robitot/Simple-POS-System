@@ -125,7 +125,7 @@
 
                 <div style="max-height: 400px; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none;"">
                     @foreach ($carts as $cart)
-                        <div class="d-flex flex-column gap-3 p-2 rounded" style="border:2px solid black;">
+                        <div class="d-flex flex-column gap-3 p-2 rounded mb-2" style="border:2px solid black;">
 
                             <div class="d-flex justify-content-start align-items-start gap-3 w-100">
 
