@@ -31,20 +31,38 @@
                 </td>
                 <td>
                     @if (Auth()->user()->id != $user->id)
-                        <button wire:click.prevent='isActive({{ $user->id }})'
-                            class="{{ $user->is_acive ? 'btn btn-danger' : 'btn btn-success' }}">
+                        <button class="{{ $user->is_acive ? 'btn btn-danger' : 'btn btn-success' }}" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal" wire:click="$set('selectedUserId', {{ $user->id }})">
                             {{ $user->is_acive ? 'Close account' : 'Open account' }}
                         </button>
                     @endif
                 </td>
-
             </tr>
         @endforeach
     @else
         <tr>
-            <td colspan="5" class="text-center">No Matching Record Found</td>
+            <td colspan="7" class="text-center">No Matching Record Found</td>
         </tr>
     @endif
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to change the status?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" wire:click.prevent="isActive({{ $selectedUserId }})"
+                        data-bs-dismiss="modal">
+                        Yes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
-
-

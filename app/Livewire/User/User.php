@@ -16,8 +16,9 @@ class User extends Component
     public $paginate = 5;
     public $sor = 'desc';
     public Pagination $pagination;
+    public $selectedUserId;
 
-    
+
     public function render()
     {
         $users = $this->getUsers();
@@ -36,15 +37,14 @@ class User extends Component
         return $user;
     }
 
-    public function isActive($id)
+    public function isActive($selectedUserId)
     {
-        $user = ModelsUser::find($id);
-        
+        $user = ModelsUser::find($selectedUserId);
+
         if ($user) {
             $user->is_acive = !$user->is_acive;
-    
+
             $user->save();
         }
     }
-    
 }

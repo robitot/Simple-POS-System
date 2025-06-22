@@ -20,7 +20,7 @@ class Checkout extends Component
     public $amount;
     public $referenceNo;
     public $tableNumber = null;
-
+    public $applyDiscount = false;
 
     public function render()
     {
@@ -41,11 +41,14 @@ class Checkout extends Component
         DB::beginTransaction();
 
         try {
+            $rawTotal = collect($carts)->sum(fn($cart) => $cart['quantity'] * $cart['size']['current_price']);
+            $finalTotal = $this->applyDiscount ? $rawTotal * 0.8 : $rawTotal;
+
             $order = POSOrders::create([
                 'pos_session_id' => $posSession->id,
                 'mop' => $this->mop,
                 'reference_number' => $this->referenceNo,
-                'total_amount' => collect($carts)->sum(fn($cart) => $cart['quantity'] * $cart['size']['current_price']),
+                'total_amount' => $finalTotal, // ✅ Use discounted total
             ]);
 
             foreach ($carts as $cart) {
@@ -55,17 +58,17 @@ class Checkout extends Component
                     'qty' => $cart['quantity'],
                     'size' => $cart['size']['name'],
                     'price' => $cart['size']['current_price'],
-                    'total_amount' => $cart['quantity'] * $cart['size']['current_price'],
+                    'total_amount' => $cart['quantity'] * $cart['size']['current_price'], // this is per item line, raw is OK
                 ]);
 
                 $product = Product::find($cart['product']['id']);
-                $product->quantity = $product->quantity - $cart['quantity'];
+                $product->quantity -= $cart['quantity'];
                 $product->save();
             }
 
             DB::commit();
             Session::forget('carts');
-            return redirect()->route('POS')->with('success', 'Order placed successfully!');
+            $this->dispatch('success-order');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Order failed: ' . $e->getMessage());

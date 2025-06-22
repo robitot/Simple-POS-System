@@ -10,6 +10,8 @@
     <th>Online Transaciton</th> --}}
     <th>Shift End Cash</th>
     <th>Status</th>
+    <th>Shift Date</th>
+
 @endsection
 
 @section('body')
@@ -28,6 +30,7 @@
                         <span class="badge bg-danger">Closed</span>
                     @endif
                 </td>
+                <td>{{ \Carbon\Carbon::parse($session->created_at)->format('F j, Y') }}</td>
             </tr>
         @endforeach
     @else

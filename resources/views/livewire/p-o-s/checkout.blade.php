@@ -30,6 +30,15 @@
                 ₱ {{ collect($carts)->sum(fn($cart) => $cart['quantity'] * $cart['size']['current_price']) }}
             </h6>
         </div>
+        @php
+            $rawTotal = collect($carts)->sum(fn($cart) => $cart['quantity'] * $cart['size']['current_price']);
+            $finalTotal = $applyDiscount ? $rawTotal * 0.8 : $rawTotal;
+        @endphp
+
+        <div class="form-check">
+            <input wire:model.live="applyDiscount" class="form-check-input" type="radio" id="discount" value="1">
+            <label class="form-check-label" for="discount">Apply 20% Discount</label>
+        </div>
 
         <div class="d-flex justify-content-between align-items-center w-100">
             <h5>
@@ -37,7 +46,7 @@
             </h5>
 
             <h5>
-                ₱ {{ collect($carts)->sum(fn($cart) => $cart['quantity'] * $cart['size']['current_price']) }}
+                ₱ {{ number_format($finalTotal, 2) }}
             </h5>
         </div>
 
@@ -75,7 +84,7 @@
                 </h6>
 
                 <h6>
-                    ₱ {{ max(0, $numericAmount - $totalAmount) }}
+                    ₱ {{ max(0, $numericAmount - $finalTotal) }}
                 </h6>
             </div>
         @endif
@@ -127,33 +136,35 @@
                 <h6 class="m-0">Order number: {{ $tableNumber }}</h6>
             </div>
 
-            @foreach ($carts as $cart)
-                <div class="d-flex flex-column gap-3 w-100 mb-3"
-                    style="border-bottom:1px solid black;border-top:1px solid black">
+            @if ($carts != null)
+                @foreach ($carts as $cart)
+                    <div class="d-flex flex-column gap-3 w-100 mb-3"
+                        style="border-bottom:1px solid black;border-top:1px solid black">
 
-                    <div class="d-flex justify-content-start align-items-start gap-3 w-100">
+                        <div class="d-flex justify-content-start align-items-start gap-3 w-100">
 
-                        <div class="d-flex  gap-2 justify-content-between align-items-center w-100">
+                            <div class="d-flex  gap-2 justify-content-between align-items-center w-100">
 
-                            <div>
-                                <span class="">
-                                    {{ $cart['product']['name'] }}
-                                    {{ $cart['quantity'] }}x
-                                </span>
+                                <div>
+                                    <span class="">
+                                        {{ $cart['product']['name'] }}
+                                        {{ $cart['quantity'] }}x
+                                    </span>
 
-                            </div>
+                                </div>
 
 
-                            <div>
-                                <span>PHP {{ $cart['size']['current_price'] * $cart['quantity'] }}</span>
+                                <div>
+                                    <span>PHP {{ $cart['size']['current_price'] * $cart['quantity'] }}</span>
+                                </div>
+
                             </div>
 
                         </div>
 
                     </div>
-
-                </div>
-            @endforeach
+                @endforeach
+            @endif
 
             <div class="d-flex justify-content-between mb-3">
                 <p>Order Date</p>
@@ -195,13 +206,14 @@
                 </p>
             </div>
 
+
             <div class="d-flex justify-content-between">
                 <p>
                     Change:
                 </p>
 
                 <p>
-                    PHP {{ max(0, $numericAmount - $totalAmount) }}
+                    PHP {{ max(0, $numericAmount - $finalTotal) }}
                 </p>
             </div>
 
@@ -211,16 +223,15 @@
                 </p>
 
                 <p>
-                    PHP {{ collect($carts)->sum(fn($cart) => $cart['quantity'] * $cart['size']['current_price']) }}
+                    PHP {{ number_format($finalTotal, 2) }}
                 </p>
             </div>
 
         </div>
-        <button id="print-button"  class="btn btn-primary">Print</button>
     </div>
 
     <script>
-        document.getElementById('print-button').addEventListener('click', function() {
+        window.addEventListener('success-order', event => {
             var printContents = document.getElementById('printable-area').innerHTML;
             var originalContents = document.body.innerHTML;
 
@@ -229,7 +240,8 @@
             window.print();
 
             document.body.innerHTML = originalContents;
-            location.reload(); // reload to restore the page state
+            window.location.href = "{{ route('POS') }}";
+
         });
     </script>
 
