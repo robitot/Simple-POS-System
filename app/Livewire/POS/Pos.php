@@ -53,7 +53,7 @@ class Pos extends Component
 
         $this->startingCash = $recentSession->starting_cash;
         $this->cash = $recentSession->orders->where('mop', 'cash')->sum('total_amount');
-        $this->eCash = $recentSession->orders->where('mop','!=', 'cash')->sum('total_amount');
+        $this->eCash = $recentSession->orders->where('mop', '!=', 'cash')->sum('total_amount');
         $this->totalCash = $this->startingCash + $this->cash + $this->eCash;
 
 
@@ -62,6 +62,18 @@ class Pos extends Component
 
     public function addToCart($product, $size)
     {
+        $totalProductQty = 0;
+        foreach ($this->carts as $cartItem) {
+            if ($cartItem['product']['id'] == $product['id']) {
+                $totalProductQty += $cartItem['quantity'];
+            }
+        }
+
+        if ($totalProductQty + 1 > $product['quantity']) {
+            $this->dispatch('out-of-stock');
+            return;
+        }
+
         foreach ($this->carts as &$cartItem) {
             if ($cartItem['size']['id'] == $size['id']) {
                 $cartItem['quantity'] += 1;
@@ -77,7 +89,6 @@ class Pos extends Component
         ];
     }
 
-
     public function remove($productId, $sizeId)
     {
         $this->carts = collect($this->carts)->reject(function ($item) use ($productId, $sizeId) {
@@ -90,7 +101,21 @@ class Pos extends Component
     {
         foreach ($this->carts as $index => $item) {
             if ($item['product']['id'] == $productId && $item['size']['id'] == $sizeId) {
+
                 if ($isIncreament) {
+                    $totalProductQty = 0;
+                    foreach ($this->carts as $cartItem) {
+                        if ($cartItem['product']['id'] == $productId) {
+                            $totalProductQty += $cartItem['quantity'];
+                        }
+                    }
+
+                    $productStock = $item['product']['quantity'];
+                    if ($totalProductQty + 1 > $productStock) {
+                        $this->dispatch('out-of-stock');
+                        return;
+                    }
+
                     $this->carts[$index]['quantity'] += 1;
                 } else {
                     if ($this->carts[$index]['quantity'] > 1) {
@@ -100,10 +125,12 @@ class Pos extends Component
                         $this->carts = array_values($this->carts);
                     }
                 }
+
                 break;
             }
         }
     }
+
 
     public function checkout()
     {
@@ -117,6 +144,5 @@ class Pos extends Component
         Session::forget('carts');
         $this->carts = null;
         $this->dispatch('cart-clear-successfully');
-
     }
 }

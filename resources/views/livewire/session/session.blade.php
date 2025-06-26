@@ -11,6 +11,7 @@
     <th>Shift End Cash</th>
     <th>Status</th>
     <th>Shift Date</th>
+    <th>Actions</th>
 
 @endsection
 
@@ -31,6 +32,11 @@
                     @endif
                 </td>
                 <td>{{ \Carbon\Carbon::parse($session->created_at)->format('F j, Y') }}</td>
+                                <td>
+                    <a href="{{ route('session.details', ['id' => $session->id]) }}" class="btn btn-primary">
+                        View
+                    </a>
+                </td>
             </tr>
         @endforeach
     @else

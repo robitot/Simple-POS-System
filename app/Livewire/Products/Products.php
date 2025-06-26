@@ -5,14 +5,14 @@ namespace App\Livewire\Products;
 use App\Livewire\Forms\Pagination;
 use App\Models\Product;
 use Livewire\Component;
-use Livewire\WithoutUrlPagination;
+use Livewire\WithPagination;
 
 class Products extends Component
 {
 
     public Pagination $pagination;
 
-    use WithoutUrlPagination;
+    use WithPagination;
 
     public function render()
     {
@@ -32,5 +32,14 @@ class Products extends Component
 
 
         return $products;
+    }
+
+    public function deleteProduct($id)
+    {
+        $product = Product::find($id);
+
+        if ($product) {
+            $product->delete();
+        }
     }
 }

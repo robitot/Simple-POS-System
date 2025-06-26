@@ -42,7 +42,7 @@
                                 <div class="modal-body">
                                     <h6>Start Shift Cash: ₱ {{ $startingCash }}</h6>
                                     <h6>Cash Transaction: ₱ {{ $cash }}</h6>
-                                    <h6>Online transaction: ₱ {{ $eCash }}</h6>
+                                    <h6>Gcash: ₱ {{ $eCash }}</h6>
                                     <h6>Total: ₱ {{ $totalCash }}</h6>
                                 </div>
                                 <div class="modal-footer">
@@ -94,11 +94,24 @@
                                         @foreach ($product->sizes as $size)
                                             <div
                                                 class="d-flex flex-column gap-2 justify-content-center align-items-center w-100">
-                                                <button class="btn btn-primary w-100"
-                                                    style="background: #69dd24!important"
-                                                    wire:click.prevent="addToCart({{ $product }}, {{ $size }})"
-                                                    wire:loading.class="opacity-50" wire:loading.attr="disabled">Add to
-                                                    cart</button>
+
+                                                @if ($product->quantity != 0)
+                                                    <button class="btn btn-primary w-100"
+                                                        style="background: #69dd24!important"
+                                                        wire:click.prevent="addToCart({{ $product }}, {{ $size }})"
+                                                        wire:loading.class="opacity-50" wire:loading.attr="disabled">Add
+                                                        to
+                                                        cart ({{ number_format($product->quantity, 0) }}
+                                                        pcs)</button>
+                                                @else
+                                                    <button class="btn btn-primary w-100" disbaled
+                                                        style="background: red!important;color:white!important"
+                                                        wire:click.prevent="addToCart({{ $product }}, {{ $size }})"
+                                                        wire:loading.class="opacity-50" wire:loading.attr="disabled">Out
+                                                        of stock</button>
+                                                @endif
+
+
                                                 <span>₱ {{ $size->current_price }}</span>
                                             </div>
                                         @endforeach
@@ -211,4 +224,13 @@
     </div>
     <x-toast-2 successTitle="Product Remove Successfully" errorTitle="Cleared successfully"
         successTrigger="product-removed-successfully" errorTrigger="cart-clear-successfully" />
+
+    <script>
+        const outOfStockTitle = @json('Out Of Stock');
+        const outOfStockTrigger = @json('out-of-stock');
+
+        window.addEventListener(outOfStockTrigger, event => {
+            toastr.error(outOfStockTitle);
+        });
+    </script>
 </div>

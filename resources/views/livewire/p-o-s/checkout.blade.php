@@ -23,7 +23,6 @@
         <div class="d-flex justify-content-between align-items-center w-100">
             <h6>
                 Sub Total:
-
             </h6>
 
             <h6>
@@ -39,7 +38,12 @@
             <input wire:model.live="applyDiscount" class="form-check-input" type="radio" id="discount" value="1">
             <label class="form-check-label" for="discount">Apply 20% Discount</label>
         </div>
-
+        @if ($applyDiscount)
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <h6>Discount:</h6>
+                <h6> ₱ {{ number_format($rawTotal * 0.2, 2) }}</h6>
+            </div>
+        @endif
         <div class="d-flex justify-content-between align-items-center w-100">
             <h5>
                 Grand Total:
@@ -59,7 +63,8 @@
         <select wire:model.live="mop" class="form-select w-100" aria-label="Default select example">
             <option selected>Select Payment Method</option>
             <option value="cash">Cash</option>
-            <option value="others">Online Transaction</option>
+            <option value="others"> <img src="{{ asset('images/GCash_Logo.png') }}" alt="menu" class="menu"
+                    width="30px"> Gcash</option>
         </select>
 
         @if ($mop == 'cash')
@@ -179,7 +184,7 @@
 
                 @if ($mop)
                     <p>
-                        {{ $mop == 'cash' ? 'Cash' : 'Online Transaction' }}
+                        {{ $mop == 'cash' ? 'Cash' : 'Gcash' }}
                     </p>
                 @endif
             </div>
@@ -205,7 +210,13 @@
                     PHP {{ collect($carts)->sum(fn($cart) => $cart['quantity'] * $cart['size']['current_price']) }}
                 </p>
             </div>
-
+            
+            @if ($applyDiscount)
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <p>Discount:</p>
+                    <p> ₱ {{ number_format($rawTotal * 0.2, 2) }}</p>
+                </div>
+            @endif
 
             <div class="d-flex justify-content-between">
                 <p>

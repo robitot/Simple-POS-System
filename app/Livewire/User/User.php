@@ -43,8 +43,18 @@ class User extends Component
 
         if ($user) {
             $user->is_acive = !$user->is_acive;
-
             $user->save();
         }
+    }
+
+    public function deleteUser($id)
+    {
+        $user = ModelsUser::find($id);
+
+        if ($user) {
+            $user->delete();
+            $this->dispatch('user-successfully-deleted');
+        }
+        $this->dispatch('user-failed-to-delete');
     }
 }

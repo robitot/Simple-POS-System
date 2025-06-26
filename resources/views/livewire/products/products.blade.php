@@ -4,10 +4,11 @@
 ])
 
 @section('head')
+    <th></th>
     <th>Id</th>
     <th>Name</th>
     <th>Status</th>
-    <th>Quantity</th>
+    <th>Stocks</th>
     <th>Price</th>
     <th>Category</th>
     <th>Action</th>
@@ -17,6 +18,9 @@
     @if ($products->count() != 0)
         @foreach ($products as $product)
             <tr>
+                <td>
+                    <img style="height:40px;width40px" src="{{ Storage::url($product->image) }}" >
+                </td>
                 <td>{{ $product->id }}</td>
                 <td>{{ $product->name }}</td>
                 <td>
@@ -33,9 +37,9 @@
                     {{ $product->quantity }}
                 </td>
 
-                
+
                 <td>
-                    {{ $product->sizes[0]->current_price ?? "n/a" }}
+                    {{ $product->sizes[0]->current_price ?? 'n/a' }}
                 </td>
 
                 <td>
@@ -46,7 +50,9 @@
                     <a href="{{ route('products.edit', ['id' => $product->id]) }}" class="btn btn-primary">
                         Edit
                     </a>
-
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                        <i class="fa-solid fa-trash" style="color:white"></i>
+                    </button>
                 </td>
             </tr>
         @endforeach
@@ -55,4 +61,25 @@
             <td colspan="6" class="text-center">No Matching Record Found</td>
         </tr>
     @endif
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true"
+        wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this product?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" wire:click="deleteProduct({{ $product->id }})" data-bs-dismiss="modal">
+                        Yes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

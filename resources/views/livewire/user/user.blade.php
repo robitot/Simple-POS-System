@@ -35,6 +35,11 @@
                             data-bs-target="#exampleModal" wire:click="$set('selectedUserId', {{ $user->id }})">
                             {{ $user->is_acive ? 'Close account' : 'Open account' }}
                         </button>
+
+                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                            >
+                            <i class="fa-solid fa-trash" style="color:white"></i>
+                        </button>
                     @endif
                 </td>
             </tr>
@@ -58,6 +63,28 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button class="btn btn-primary" wire:click.prevent="isActive({{ $selectedUserId }})"
+                        data-bs-dismiss="modal">
+                        Yes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true"
+        wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this user?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" wire:click="deleteUser({{ $user->id }})"
                         data-bs-dismiss="modal">
                         Yes
                     </button>

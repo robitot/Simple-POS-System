@@ -49,7 +49,7 @@
                 @include('components.input', [
                     'model' => 'qty',
                     'type' => 'number',
-                    'label' => 'Quantity',
+                    'label' => 'Stock',
                 ])
 
                 @include('components.input', [
