@@ -19,7 +19,7 @@
         @foreach ($products as $product)
             <tr>
                 <td>
-                    <img style="height:40px;width40px" src="{{ Storage::url($product->image) }}" >
+                    <img style="height:40px;width40px" src="{{ Storage::url($product->image) }}">
                 </td>
                 <td>{{ $product->id }}</td>
                 <td>{{ $product->name }}</td>
@@ -50,7 +50,8 @@
                     <a href="{{ route('products.edit', ['id' => $product->id]) }}" class="btn btn-primary">
                         Edit
                     </a>
-                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                        wire:click="$set('productToDelete', {{ $product->id }})">
                         <i class="fa-solid fa-trash" style="color:white"></i>
                     </button>
                 </td>
@@ -67,7 +68,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                    <h1 class="modal-title fs-5">Confirmation</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -75,7 +76,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button class="btn btn-primary" wire:click="deleteProduct({{ $product->id }})" data-bs-dismiss="modal">
+                    <button class="btn btn-primary" wire:click="deleteProduct" data-bs-dismiss="modal">
                         Yes
                     </button>
                 </div>

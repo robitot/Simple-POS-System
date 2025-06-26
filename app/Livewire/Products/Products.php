@@ -34,12 +34,14 @@ class Products extends Component
         return $products;
     }
 
-    public function deleteProduct($id)
-    {
-        $product = Product::find($id);
+    public $productToDelete;
 
+    public function deleteProduct()
+    {
+        $product = Product::find($this->productToDelete);
         if ($product) {
             $product->delete();
+            $this->productToDelete = null;
         }
     }
 }

@@ -47,14 +47,19 @@ class User extends Component
         }
     }
 
-    public function deleteUser($id)
+    public $userToDelete;
+
+    public function deleteUser()
     {
-        $user = ModelsUser::find($id);
+        $user = \App\Models\User::find($this->userToDelete);
 
         if ($user) {
             $user->delete();
             $this->dispatch('user-successfully-deleted');
+        } else {
+            $this->dispatch('user-failed-to-delete');
         }
-        $this->dispatch('user-failed-to-delete');
+
+        $this->userToDelete = null;
     }
 }
