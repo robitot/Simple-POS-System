@@ -30,14 +30,14 @@
     </div> --}}
     <button class="btn btn-primary mb-4" id="print-button" style="color:white!important">Print Dashboard Report</button>
 
-    <div id="printable-area" sty>
+    <div id="printable-area" >
         <h5 class="w-100 text-center">Jetritz</h5>
         <p class="w-100 text-center"> Financial Report {{ \Carbon\Carbon::now('Asia/Manila')->format('F d, Y h:i A') }}</p>
 
         <h6 class="animate__animated animate__fadeInLeft">Sales Performance</h6>
         <div class="d-flex flex-column mb-4">
             <div class="d-flex flex-column mb-4">
-                <p>Gross: ₱{{ number_format($gross->total, 2) }}
+                <p>Total Sales: ₱{{ number_format($gross->total, 2) }}
                 </p>
             </div>
         </div>

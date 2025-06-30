@@ -14,12 +14,11 @@ class POSOrders extends Model
 
     public function session()
     {
-        return $this->belongsTo(POSSession::class, 'pos_session_id'); 
+        return $this->belongsTo(POSSession::class, 'pos_session_id');
     }
-
 
     public function orderItems()
     {
-        return $this->hasMany(POSOrderItems::class);
+        return $this->hasMany(POSOrderItems::class, 'pos_order_id');
     }
 }

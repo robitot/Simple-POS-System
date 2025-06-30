@@ -138,7 +138,7 @@
             </div>
 
             <div class="d-flex flex-column justify-content-center align-items-center mb-3">
-                <h6 class="m-0">Order number: {{ $tableNumber }}</h6>
+                <h6 class="m-0">Rceipt number: {{ $receiptNumber }}</h6>
             </div>
 
             @if ($carts != null)
@@ -171,9 +171,13 @@
                 @endforeach
             @endif
 
-            <div class="d-flex justify-content-between mb-3">
-                <p>Order Date</p>
+            <div class="d-flex justify-content-between ">
+                <p>Order Date:</p>
                 <p>{{ now()->format('F j, Y') }}</p>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+                <p>Table Number:</p>
+                <p>{{ $tableNumber }}</p>
             </div>
 
             <div class="d-flex justify-content-between">
@@ -210,7 +214,7 @@
                     PHP {{ collect($carts)->sum(fn($cart) => $cart['quantity'] * $cart['size']['current_price']) }}
                 </p>
             </div>
-            
+
             @if ($applyDiscount)
                 <div class="d-flex justify-content-between align-items-center w-100">
                     <p>Discount:</p>

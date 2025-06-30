@@ -52,3 +52,10 @@
      <i class="fa-solid fa-list-check text-hover icon-size {{ Route::is('session') ? 'text-white' : '' }}"></i>
      <p class="text-hover {{ Route::is('session') ? 'text-white' : '' }}">Cashier Shift</p>
  </a>
+
+ <a href="{{ route('receipt') }}"
+     class="active-hover d-flex justify-content-start gap-3 align-items-center cursor-pointer text-decoration-none text-black py-2
+ {{ Route::is('session') ? 'active-nav' : '' }}">
+     <i class="fa-solid fa-list-check text-hover icon-size {{ Route::is('session') ? 'text-white' : '' }}"></i>
+     <p class="text-hover {{ Route::is('receipt') ? 'text-white' : '' }}">Receipts History</p>
+ </a>

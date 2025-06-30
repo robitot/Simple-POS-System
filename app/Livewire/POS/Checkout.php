@@ -20,11 +20,18 @@ class Checkout extends Component
     public $amount;
     public $referenceNo;
     public $tableNumber = null;
+    public $receiptNumber = null;
     public $applyDiscount = false;
 
     public function render()
     {
         return view('livewire.p-o-s.checkout', ['carts' => Session::get('carts')]);
+    }
+
+    public function mount()
+    {
+        $nextId = POSOrders::max('id') + 1;
+        $this->receiptNumber = $nextId;
     }
 
     public function placeOrder()

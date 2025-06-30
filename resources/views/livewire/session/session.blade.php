@@ -6,13 +6,10 @@
 @section('head')
     <th>Id</th>
     <th>Shift Start Cash</th>
-    {{-- <th>Cash Transaction</th>
-    <th>Online Transaciton</th> --}}
     <th>Shift End Cash</th>
     <th>Status</th>
     <th>Shift Date</th>
     <th>Actions</th>
-
 @endsection
 
 @section('body')
@@ -21,8 +18,6 @@
             <tr>
                 <td>{{ $session->id }}</td>
                 <td>{{ $session->starting_cash }}</td>
-                {{-- <td>{{ $session->orders->where('mop', 'cash')->sum('total_amount') }}</td>
-                <td>{{ $session->orders->where('mop','!=' ,'cash')->sum('total_amount') }}</td> --}}
                 <td>{{ $session->ending_cash ?? 'on going' }} </td>
                 <td>
                     @if ($session->status)
@@ -32,7 +27,7 @@
                     @endif
                 </td>
                 <td>{{ \Carbon\Carbon::parse($session->created_at)->format('F j, Y') }}</td>
-                                <td>
+                <td>
                     <a href="{{ route('session.details', ['id' => $session->id]) }}" class="btn btn-primary">
                         View
                     </a>
