@@ -138,7 +138,7 @@
             </div>
 
             <div class="d-flex flex-column justify-content-center align-items-center mb-3">
-                <h6 class="m-0">Rceipt number: {{ $receiptNumber }}</h6>
+                <h6 class="m-0">Receipt number: {{ $receiptNumber }}</h6>
             </div>
 
             @if ($carts != null)
@@ -153,14 +153,14 @@
                                 <div>
                                     <span class="">
                                         {{ $cart['product']['name'] }}
-                                        {{ $cart['quantity'] }}x
+                                        
                                     </span>
 
                                 </div>
 
 
                                 <div>
-                                    <span>PHP {{ $cart['size']['current_price'] * $cart['quantity'] }}</span>
+                                    <span>{{$cart['size']['current_price'] }} x {{ $cart['quantity'] }}</span>
                                 </div>
 
                             </div>

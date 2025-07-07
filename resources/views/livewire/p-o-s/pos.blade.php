@@ -95,22 +95,28 @@
                                             <div
                                                 class="d-flex flex-column gap-2 justify-content-center align-items-center w-100">
 
-                                                @if ($product->quantity != 0)
+                                                @if ($product->quantity > 10)
                                                     <button class="btn btn-primary w-100"
                                                         style="background: #69dd24!important"
                                                         wire:click.prevent="addToCart({{ $product }}, {{ $size }})"
-                                                        wire:loading.class="opacity-50" wire:loading.attr="disabled">Add
-                                                        to
-                                                        cart ({{ number_format($product->quantity, 0) }}
-                                                        pcs)</button>
-                                                @else
-                                                    <button class="btn btn-primary w-100" disbaled
-                                                        style="background: red!important;color:white!important"
+                                                        wire:loading.class="opacity-50" wire:loading.attr="disabled">
+                                                        Add to cart ({{ number_format($product->quantity, 0) }} pcs)
+                                                    </button>
+                                                @elseif ($product->quantity > 0 && $product->quantity <= 10)
+                                                    <button class="btn btn-primary w-100"
+                                                        style="background: orange!important; color:white!important"
                                                         wire:click.prevent="addToCart({{ $product }}, {{ $size }})"
-                                                        wire:loading.class="opacity-50" wire:loading.attr="disabled">Out
-                                                        of stock</button>
+                                                        wire:loading.class="opacity-50" wire:loading.attr="disabled">
+                                                        Add to cart ({{ number_format($product->quantity, 0) }} pcs)
+                                                    </button>
+                                                @else
+                                                    <button class="btn btn-primary w-100" disabled
+                                                        style="background: red!important; color:white!important"
+                                                        wire:click.prevent="addToCart({{ $product }}, {{ $size }})"
+                                                        wire:loading.class="opacity-50" wire:loading.attr="disabled">
+                                                        Out of stock
+                                                    </button>
                                                 @endif
-
 
                                                 <span>₱ {{ $size->current_price }}</span>
                                             </div>

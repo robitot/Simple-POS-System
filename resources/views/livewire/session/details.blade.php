@@ -7,7 +7,7 @@
     <table class="table table-bordered" i>
         <thead>
             <tr>
-                <th>Receipt number</th>
+                {{-- <th>Receipt number</th> --}}
                 <th>Product</th>
                 <th>Price</th>
                 <th>QTY</th>
@@ -22,7 +22,7 @@
 
                 @foreach ($orders as $order)
                     <tr>
-                        <td>{{ $order->pos_order_id }}</td>
+                        {{-- <td>{{ $order->pos_order_id }}</td> --}}
                         <td>{{ $order->product_name }}</td>
                         <td>₱{{ number_format($order->price, 2) }}</td>
                         <td>{{ $order->qty }}</td>

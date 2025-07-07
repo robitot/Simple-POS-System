@@ -12,6 +12,7 @@ class Category extends Component
 
     use WithoutUrlPagination;
     public Pagination $pagination;
+    public $categoryId;
 
     public function render()
     {
@@ -25,5 +26,19 @@ class Category extends Component
             ->paginate($this->pagination->paginate);
 
         return $categories;
+    }
+
+    public function deleteCategory()
+    {
+        $category = \App\Models\Category::find($this->categoryId);
+
+        if ($category) {
+            $category->delete();
+            $this->dispatch('category-successfully-deleted');
+        } else {
+            $this->dispatch('category-failed-to-delete');
+        }
+
+        $this->categoryId = null;
     }
 }
