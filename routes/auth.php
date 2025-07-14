@@ -8,6 +8,10 @@ Route::get('/', function () {
     return view('auth.login');
 })->name('login')->middleware('guest');
 
+Route::get('/forgotPassword', function () {
+    return view('auth.forgotPassword');
+})->name('forgotPassword')->middleware('guest');
+
 Route::get('/register', function () {
     return view('auth.register');
 })

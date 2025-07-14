@@ -40,8 +40,7 @@
         @elseif(session('error'))
             <span class="text-danger text-center w-100">{{ session('error') }}</span>
         @endif
-        {{-- <span>Don't have an account? <a href="{{ route('register') }}" wire:navigate>Create here</a></span>
-        <span>Forgot password? <a href="#">Click here</a></span> --}}
+        <span style="color:White">Forgot password? <a href="{{route('forgotPassword')}}">Click here</a></span>
     </div>
     <script>
         document.addEventListener('livewire:init', () => {
