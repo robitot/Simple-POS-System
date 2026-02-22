@@ -30,7 +30,7 @@
                     @endif
                 </td>
                 <td>
-                    @if (Auth()->user()->id != $user->id)
+                    @if (Auth()->user()->name == 'admin')
                         <button class="{{ $user->is_acive ? 'btn btn-danger' : 'btn btn-success' }}" data-bs-toggle="modal"
                             data-bs-target="#exampleModal" wire:click="$set('selectedUserId', {{ $user->id }})">
                             {{ $user->is_acive ? 'Close account' : 'Open account' }}
