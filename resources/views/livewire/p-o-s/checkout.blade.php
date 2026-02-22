@@ -1,5 +1,32 @@
 <div class="d-flex gap-4 w-100 justify-content-center align-items-start">
 
+    <style>
+        @media print {
+            body * {
+                visibility: hidden;
+                /* hide everything */
+            }
+
+            #printable-area,
+            #printable-area * {
+                visibility: visible;
+                /* only show printable area */
+            }
+
+            #printable-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+
+            /* optional: remove shadows/borders that don’t print nicely */
+            .shadow-lg {
+                box-shadow: none !important;
+            }
+        }
+    </style>
+
     @php
         $totalAmount = collect($carts)->sum(fn($cart) => $cart['quantity'] * $cart['size']['current_price']);
         $numericAmount = is_numeric($amount) ? (float) $amount : 0;
@@ -153,14 +180,14 @@
                                 <div>
                                     <span class="">
                                         {{ $cart['product']['name'] }}
-                                        
+
                                     </span>
 
                                 </div>
 
 
                                 <div>
-                                    <span>{{$cart['size']['current_price'] }} x {{ $cart['quantity'] }}</span>
+                                    <span>{{ $cart['size']['current_price'] }} x {{ $cart['quantity'] }}</span>
                                 </div>
 
                             </div>
@@ -247,14 +274,7 @@
 
     <script>
         window.addEventListener('success-order', event => {
-            var printContents = document.getElementById('printable-area').innerHTML;
-            var originalContents = document.body.innerHTML;
-
-            document.body.innerHTML = printContents;
-
             window.print();
-
-            document.body.innerHTML = originalContents;
             window.location.href = "{{ route('POS') }}";
 
         });
