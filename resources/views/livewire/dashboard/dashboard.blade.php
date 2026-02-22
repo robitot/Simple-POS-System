@@ -17,6 +17,25 @@
         #printable-area {
             display: none;
         }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            #printable-area,
+            #printable-area * {
+                visibility: visible;
+                display: block;
+            }
+
+            #printable-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+        }
     </style>
 
     {{-- <div class="btn-group mb-4" role="group" aria-label="Filter Options ">
@@ -30,9 +49,10 @@
     </div> --}}
     <button class="btn btn-primary mb-4" id="print-button" style="color:white!important">Print Dashboard Report</button>
 
-    <div id="printable-area" >
+    <div id="printable-area">
         <h5 class="w-100 text-center">Jetritz</h5>
-        <p class="w-100 text-center"> Financial Report {{ \Carbon\Carbon::now('Asia/Manila')->format('F d, Y h:i A') }}</p>
+        <p class="w-100 text-center"> Financial Report {{ \Carbon\Carbon::now('Asia/Manila')->format('F d, Y h:i A') }}
+        </p>
 
         <h6 class="animate__animated animate__fadeInLeft">Sales Performance</h6>
         <div class="d-flex flex-column mb-4">
@@ -79,7 +99,6 @@
             </div>
         @endif
     </div>
-
 
     <div>
         <div class="d-flex gap-4" wire:loading.remove>
@@ -147,28 +166,7 @@
 
     <script>
         document.getElementById('print-button').addEventListener('click', function() {
-            document.body.classList.add('printing');
-
-            var printContents = document.getElementById('printable-area').innerHTML;
-            var originalContents = document.body.innerHTML;
-
-            setTimeout(function() {
-                document.body.innerHTML = printContents;
-
-                setTimeout(function() {
-                    // Set up the afterprint handler first
-                    window.onafterprint = function() {
-                        document.body.innerHTML = originalContents;
-                        document.body.classList.remove('printing');
-                        window.location.reload();
-                        window.onafterprint = null; // Clean up
-                    };
-
-                    window.print();
-
-                }, 500);
-
-            }, 1000);
+            window.print();
         });
     </script>
 
