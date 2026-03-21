@@ -22,10 +22,17 @@ class Checkout extends Component
     public $tableNumber = null;
     public $receiptNumber = null;
     public $applyDiscount = false;
+    public $carts = [];
 
     public function render()
     {
-        return view('livewire.p-o-s.checkout', ['carts' => Session::get('carts')]);
+        $sessionCarts = Session::get('carts', []);
+
+        if (!empty($sessionCarts)) {
+            $this->carts = $sessionCarts;
+        }
+
+        return view('livewire.p-o-s.checkout', ['carts' => $this->carts]);
     }
 
     public function mount()
@@ -37,7 +44,7 @@ class Checkout extends Component
     public function placeOrder()
     {
         $posSession = POSSession::where('status', true)->first();
-        $carts = Session::get('carts');
+        $carts = $this->carts ?: Session::get('carts', []);
 
         // Validation
         if (!$posSession || !$this->mop || ($this->mop !== 'cash' && empty($this->referenceNo)) || empty($carts)) {
@@ -75,6 +82,7 @@ class Checkout extends Component
 
             DB::commit();
             Session::forget('carts');
+            $this->carts = $carts;
             $this->dispatch('success-order');
         } catch (\Exception $e) {
             DB::rollBack();
